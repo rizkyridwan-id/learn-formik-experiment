@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { FormNewsletter } from "../interface/form.interface";
 import Button from "./Button";
 import Input from "./Input";
+import * as yup from "yup";
 
 export default function FormikNewsletter() {
   const initialValues: FormNewsletter = {
@@ -14,35 +15,25 @@ export default function FormikNewsletter() {
     alert(JSON.stringify(values, null, 2));
   };
 
-  const validate = (values: FormNewsletter) => {
-    const errors: Partial<Record<keyof FormNewsletter, string>> = {};
-    if (!values.firstName) {
-      errors.firstName = "Firstname is Required";
-    } else if (values.firstName.length > 15) {
-      errors.firstName = "Must be 15 characters or less";
-    }
-
-    if (!values.lastName) {
-      errors.lastName = "Lastname is Required";
-    } else if (values.lastName.length > 20) {
-      errors.lastName = "Must be 20 characters or less";
-    }
-
-    if (!values.email) {
-      errors.email = "Email is Required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = "Invalid Email Address";
-    }
-
-    return errors;
-  };
+  const validationSchema: yup.ObjectSchema<FormNewsletter> = yup.object({
+    firstName: yup
+      .string()
+      .required("Firstname is required")
+      .max(15, "Must be 15 characters or less"),
+    lastName: yup
+      .string()
+      .required("Lastname is required")
+      .max(20, "Must be 20 character or less"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid email address"),
+  });
 
   const formik = useFormik({
     initialValues,
     onSubmit: handleSubmit,
-    validate,
+    validationSchema,
   });
 
   return (
