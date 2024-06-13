@@ -1,8 +1,8 @@
-import { useFormik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { FormNewsletter } from "../interface/form.interface";
 import Button from "./Button";
-import Input from "./Input";
 import * as yup from "yup";
+import FormikInput from "./FormikInput";
 
 export default function FormikNewsletter() {
   const initialValues: FormNewsletter = {
@@ -11,8 +11,14 @@ export default function FormikNewsletter() {
     lastName: "",
   };
 
-  const handleSubmit = (values: FormNewsletter) => {
-    alert(JSON.stringify(values, null, 2));
+  const handleSubmit = (
+    values: FormNewsletter,
+    { setSubmitting }: FormikHelpers<FormNewsletter>
+  ) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false);
+    }, 500);
   };
 
   const validationSchema: yup.ObjectSchema<FormNewsletter> = yup.object({
@@ -30,12 +36,6 @@ export default function FormikNewsletter() {
       .email("Invalid email address"),
   });
 
-  const formik = useFormik({
-    initialValues,
-    onSubmit: handleSubmit,
-    validationSchema,
-  });
-
   return (
     <div className="rounded-2xl p-4 flex flex-col my-4 bg-white w-3/4 md:w-7/12 mx-auto">
       <h1 className="text-2xl text-slate-600 font-semibold text-center">
@@ -44,51 +44,45 @@ export default function FormikNewsletter() {
       <h2 className="text-lg text-slate-400 font-light italic text-center">
         note: Based on tutorial, see github commit log for detailed steps
       </h2>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="grid grid-cols-12 w-full gap-x-8"
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
       >
-        <Input
-          id="firstName"
-          type="text"
-          label="First Name"
-          error={
-            formik.touched.firstName &&
-            formik.errors.firstName &&
-            formik.errors.firstName
-          }
-          className="col-span-12 md:col-span-6"
-          {...formik.getFieldProps("firstName")}
-        />
+        {({ isSubmitting }) => (
+          <Form className="grid grid-cols-12 w-full gap-x-8">
+            <FormikInput
+              id="firstName"
+              name="firstName"
+              type="text"
+              label="First Name"
+              className="col-span-12 md:col-span-6"
+            />
 
-        <Input
-          id="lastName"
-          type="text"
-          label="Last Name"
-          error={
-            formik.touched.lastName &&
-            formik.errors.lastName &&
-            formik.errors.lastName
-          }
-          className="col-span-12 md:col-span-6"
-          {...formik.getFieldProps("lastName")}
-        />
+            <FormikInput
+              id="lastName"
+              name="lastName"
+              type="text"
+              label="Last Name"
+              className="col-span-12 md:col-span-6"
+            />
 
-        <Input
-          id="email"
-          type="email"
-          label="Email"
-          error={
-            formik.touched.email && formik.errors.email && formik.errors.email
-          }
-          className="col-span-12 md:col-span-6"
-          {...formik.getFieldProps("email")}
-        />
+            <FormikInput
+              id="email"
+              name="email"
+              type="email"
+              label="Email"
+              className="col-span-12 md:col-span-6"
+            />
 
-        <div className="col-span-12 text-right ">
-          <Button type="submit">Submit</Button>
-        </div>
-      </form>
+            <div className="col-span-12 text-right ">
+              <Button type="submit" isSubmitting={isSubmitting}>
+                Submit
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }
