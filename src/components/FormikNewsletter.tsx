@@ -63,8 +63,13 @@ export default function FormikNewsletter() {
           name="firstName"
           label="First Name"
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.firstName}
-          error={formik.errors.firstName && formik.errors.firstName}
+          error={
+            formik.touched.firstName &&
+            formik.errors.firstName &&
+            formik.errors.firstName
+          }
           className="col-span-12 md:col-span-6"
         />
 
@@ -74,8 +79,13 @@ export default function FormikNewsletter() {
           name="lastName"
           label="Last Name"
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.lastName}
-          error={formik.errors.lastName && formik.errors.lastName}
+          error={
+            formik.touched.lastName &&
+            formik.errors.lastName &&
+            formik.errors.lastName
+          }
           className="col-span-12 md:col-span-6"
         />
 
@@ -85,8 +95,11 @@ export default function FormikNewsletter() {
           name="email"
           label="Email"
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.email}
-          error={formik.errors.email && formik.errors.email}
+          error={
+            formik.touched.email && formik.errors.email && formik.errors.email
+          }
           className="col-span-12 md:col-span-6"
         />
 
