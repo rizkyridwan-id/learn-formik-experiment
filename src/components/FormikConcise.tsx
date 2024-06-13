@@ -47,6 +47,7 @@ export default function FormikConcise() {
         initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
+        validateOnChange={false}
       >
         {({ isSubmitting }) => (
           <Form className="grid grid-cols-12 w-full gap-x-8">
