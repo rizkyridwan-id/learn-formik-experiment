@@ -1,4 +1,5 @@
 import FormikConcise from "./components/FormikConcise";
+import FormikNewsletter from "./components/FormikNewsletter";
 import FormikVerbose from "./components/FormikVerbose";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
       <h1 className="text-3xl font-bold">Formik Experiment</h1>
       <FormikVerbose />
       <FormikConcise />
+      <FormikNewsletter />
     </div>
   );
 }

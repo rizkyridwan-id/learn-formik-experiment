@@ -3,3 +3,9 @@ export interface FormValues {
   password: string;
   address: string;
 }
+
+export interface FormNewsletter {
+  email: string;
+  firstName: string;
+  lastName: string;
+}
