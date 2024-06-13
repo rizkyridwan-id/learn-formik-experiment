@@ -14,9 +14,35 @@ export default function FormikNewsletter() {
     alert(JSON.stringify(values, null, 2));
   };
 
+  const validate = (values: FormNewsletter) => {
+    const errors: Partial<Record<keyof FormNewsletter, string>> = {};
+    if (!values.firstName) {
+      errors.firstName = "Firstname is Required";
+    } else if (values.firstName.length > 15) {
+      errors.firstName = "Must be 15 characters or less";
+    }
+
+    if (!values.lastName) {
+      errors.lastName = "Lastname is Required";
+    } else if (values.lastName.length > 20) {
+      errors.lastName = "Must be 20 characters or less";
+    }
+
+    if (!values.email) {
+      errors.email = "Email is Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "Invalid Email Address";
+    }
+
+    return errors;
+  };
+
   const formik = useFormik({
     initialValues,
     onSubmit: handleSubmit,
+    validate,
   });
 
   return (
@@ -38,6 +64,7 @@ export default function FormikNewsletter() {
           label="First Name"
           onChange={formik.handleChange}
           value={formik.values.firstName}
+          error={formik.errors.firstName && formik.errors.firstName}
           className="col-span-12 md:col-span-6"
         />
 
@@ -48,6 +75,7 @@ export default function FormikNewsletter() {
           label="Last Name"
           onChange={formik.handleChange}
           value={formik.values.lastName}
+          error={formik.errors.lastName && formik.errors.lastName}
           className="col-span-12 md:col-span-6"
         />
 
@@ -58,6 +86,7 @@ export default function FormikNewsletter() {
           label="Email"
           onChange={formik.handleChange}
           value={formik.values.email}
+          error={formik.errors.email && formik.errors.email}
           className="col-span-12 md:col-span-6"
         />
 
